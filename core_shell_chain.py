@@ -1,21 +1,6 @@
-r"""
-
-
-Definition
-----------
-
-(Coming soon)
-
-References
-----------
-
-J. S. Pedersen, Adv. Colloid Interface Sci. 70, 171-210 (1997).
-M.J.A. Hore, J. Ford, K. Ohno, R. J. Composto, B. Hammouda, Macromolecules 46, 9341-9348 (2013).
-"""
-
 import numpy as np  # type: ignore
 from numpy import pi, inf, power, errstate
-from scipy.special import gammainc, gamma, j0, j1
+from sasmodels.special import sas_gammainc, sas_sinx_x, sas_3j1x_x
 
 name = "core_shell_chain"
 title = "Spherically symmetric core with grafted polymer chains."
@@ -26,7 +11,7 @@ category = "shape:sphere"
 #             [ "name",       "units",         default, [lower, upper], "type",   "description"],
 parameters = [["sld",         "1e-6/Ang^2",    3.5,     [-inf, inf],    "sld",    "Core scattering length density"],
               ["sld_shell",   "1e-6/Ang^2",    1.0,     [-inf, inf],    "sld",    "Shell scattering length density"],
-	          ["sld_poly",    "1e-6/Ang^2",    1.0,     [-inf, inf],    "sld",    "Grafted polymer scattering length density"],
+	      ["sld_poly",    "1e-6/Ang^2",    1.0,     [-inf, inf],    "sld",    "Grafted polymer scattering length density"],
               ["sld_solvent", "1e-6/Ang^2",    4.4,     [-inf, inf],    "sld",    "Solvent scattering length density"],
               ["radius",      "Ang",           60,      [0, inf],       "volume", "Core radius"],
               ["t_shell",     "Ang",           20,      [0, inf],       "volume", "Shell thickness"],
@@ -73,7 +58,7 @@ def Iq(q,
     o2nu = 1.0 / 2.0 / nu
 
     # Propagator function:
-    Ea = j0(q*Rcoreshell)
+    Ea = sas_sinx_x(q*Rcoreshell)
 
     # Number of grafted chains per core:
     Ng = poly_sig * 4.00 * pi * (0.1 * radius) * (0.1 * radius)
@@ -83,17 +68,16 @@ def Iq(q,
 
     # Form factor amplitude of core-shell sphere:
     with errstate(divide='ignore'):
-        Fs = 3.0*(sld - sld_shell)*Vcore*j1(q*radius)/(q*radius) + 3.0*(sld_shell - sld_solvent)*Vcoreshell*j1(q*Rcoreshell)/(q*Rcoreshell)
+        Fs = (sld - sld_shell)*Vcore*sas_3j1x_x(q*radius) + (sld_shell - sld_solvent)*Vcoreshell*sas_3j1x_x(q*Rcoreshell)
 
 
     # Form factor amplitude of the polymer:
     with errstate(divide='ignore'):
-        Fp = o2nu*power(Usub, -o2nu) * gamma(o2nu) * gammainc(o2nu, Usub) 
-
+        Fp = o2nu*power(Usub, -o2nu) * sas_gammainc(o2nu, Usub)
 
     # Form factor of the polymer (Pp(q) is not simply Fp(q)^2!!):
     with errstate(divide='ignore'):
-        Pp = onu * power(Usub, -o2nu)*gamma(o2nu)*gammainc(o2nu, Usub) - onu * power(Usub, -onu)*gamma(onu)*gammainc(onu,Usub)
+        Pp = onu * power(Usub, -o2nu)*sas_gammainc(o2nu, Usub) - onu * power(Usub, -onu)*sas_gammainc(onu,Usub)
 
     # Combine all terms to form intensity:
     #
