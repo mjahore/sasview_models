@@ -73,11 +73,11 @@ def Iq(q,
 
     # Form factor amplitude of the polymer:
     with errstate(divide='ignore'):
-        Fp = o2nu*power(Usub, -o2nu) * sas_gammainc(o2nu, Usub)
+        Fp = o2nu*power(Usub, -o2nu) * sas_gamma(o2nu) * sas_gammainc(o2nu, Usub)
 
     # Form factor of the polymer (Pp(q) is not simply Fp(q)^2!!):
     with errstate(divide='ignore'):
-        Pp = onu * power(Usub, -o2nu)*sas_gammainc(o2nu, Usub) - onu * power(Usub, -onu)*sas_gammainc(onu,Usub)
+        Pp = onu * power(Usub, -o2nu)*sas_gamma(o2nu)*sas_gammainc(o2nu, Usub) - onu * power(Usub, -onu)*sas_gamma(onu)*sas_gammainc(onu,Usub)
 
     # Combine all terms to form intensity:
     #
