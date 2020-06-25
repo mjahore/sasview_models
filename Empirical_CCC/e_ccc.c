@@ -33,6 +33,7 @@ static double Iq(double q, double m, double sld_c, double sld1, double sld2, dou
 	// Parameters for polymer form factors/amplitudes:
 	double onu1, o2nu1, onu2, o2nu2, Usub1, Usub2;
 	double vc = M_4PI_3 * pow(R, 3.0);
+	double vt = vc + Ng*(v1 + v2);
 
 	// Misc terms:
 	double Fs, Fp1, Fp2, Pp1, Pp2, E1, E2;
@@ -45,9 +46,9 @@ static double Iq(double q, double m, double sld_c, double sld1, double sld2, dou
         Q1 = 1.0/R * sqrt(5.0*m/2.0);
         Q2 = 1.0/R * sqrt(3.0*m/4.0);
         Q3 = 1.0/rc * sqrt(3.0*m/4.0);
-        P1 =      exp(-pow(Q1,2.0)*pow(R,  2.0)/5) * pow(Q1, m);
-        P2 =      exp(-pow(Q2,2.0)*pow(R,  2.0)/6) * pow(Q2, 0.25*m);
-	P3 =      exp(-pow(Q3,2.0)*pow(rc, 2.0)/6) * pow(Q3, 0.25*m);
+        P1 =      exp(-pow(Q1,2.0)*pow(R,  2.0)/5.0) * pow(Q1, m);
+        P2 =      exp(-pow(Q2,2.0)*pow(R,  2.0)/6.0) * pow(Q2, 0.25*m);
+	P3 =      exp(-pow(Q3,2.0)*pow(rc, 2.0)/6.0) * pow(Q3, 0.25*m);
 
 	// Exponents/Pre-factors for incomplete gamma function.
 	onu1  = 1.0/nu1;
@@ -61,8 +62,9 @@ static double Iq(double q, double m, double sld_c, double sld1, double sld2, dou
 	if (q < Q1) {
 		Fs = (sld_c - sld_solvent) * vc * exp(-pow(q, 2.0)*pow(R, 2.0)/10.0);
 	} else {
-		Fs = (sld_c - sld_solvent) * vc * P1 * pow(q, -0.5*m);
+		Fs = (sld_c - sld_solvent) * vc * sqrt(P1) * pow(q, -0.5*m);
 	}
+	
 	
 	// Core propagators:
 	if (q < Q2) {
@@ -107,7 +109,7 @@ static double Iq(double q, double m, double sld_c, double sld1, double sld2, dou
 	term7 = Ng * Ng * Fp1 * E1 * E2 * Fp2;
 
 	// Final intensity:
-	inten = 1.0e-4 * (term1 + term2 + term3 + term4 + term5 + term6 + term7);
+	inten = 1.0e-4 * (term1 + term2 + term3 + term4 + term5 + term6 + term7)/vt;
 	return inten;
 
  
