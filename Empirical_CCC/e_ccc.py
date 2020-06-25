@@ -3,8 +3,8 @@
 import numpy as np  # type: ignore
 from numpy import pi, inf, power, errstate
 
-name = "Empirical CCC"
-title = "Empirical model of polymer-grafted nanosphere.""
+name = "e_ccc"
+title = "Empirical model of polymer-grafted nanosphere."
 description = """       """
 category = "shape:sphere"
 
@@ -13,7 +13,7 @@ form_factor = True
 
 #             [ "name",       "units",         default, [lower, upper], "type",   "description"],
 parameters = [["I0",          "None",          1.0,     [-inf,inf],     "",       "Coefficient 1"],
-              ["I1",          "None",          1.0,     [-inf,inf],     "",       "Coefficient 2"],
+              ["m",           "None",          4.0,     [1,4],          "",       "Core Porod exponent"],
               ["sld_c",       "1e-6/Ang^2",    3.47,    [-inf, inf],    "sld",    "Core scattering length density"],
               ["sld1",        "1e-6/Ang^2",    0.814,   [-inf, inf],    "sld",    "Chain region 1 scattering length density"],
               ["sld2",        "1e-6/Ang^2",    4.24,    [-inf, inf],    "sld",    "Chain region 2 scattering length density"],
@@ -25,6 +25,8 @@ parameters = [["I0",          "None",          1.0,     [-inf,inf],     "",     
               ["rg2",         "Ang",           100,     [1, inf],       "volume", "Radius of gyration of chain in region 2"],
               ["nu1",         "None",          0.70,    [0.25, 1.0],    "",       "Excluded volume parameter of chain in region 1"],
               ["nu2",         "None",          0.50,    [0.25, 1.0],    "",       "Excluded volume parameter of chain in region 2"],
+              ["v1",          "Ang^3",          12000,   [0, inf],       "volume", "Volume of 1 chain in region 1"],
+              ["v2",          "Ang^3",          12000,   [0, inf],       "volume", "Volume of 1 chain in region 2"],
              ]
 
 radius_effective_modes = ["radius", "outer_radius"]
