@@ -12,8 +12,7 @@ structure_factor = False
 form_factor = True
 
 #             [ "name",       "units",         default, [lower, upper], "type",   "description"],
-parameters = [["I0",          "None",          1.0,     [-inf,inf],     "",       "Coefficient 1"],
-              ["m",           "None",          4.0,     [1,4],          "",       "Core Porod exponent"],
+parameters = [["m",           "None",          4.0,     [1,4],          "",       "Core Porod exponent"],
               ["sld_c",       "1e-6/Ang^2",    3.47,    [-inf, inf],    "sld",    "Core scattering length density"],
               ["sld1",        "1e-6/Ang^2",    0.814,   [-inf, inf],    "sld",    "Chain region 1 scattering length density"],
               ["sld2",        "1e-6/Ang^2",    4.24,    [-inf, inf],    "sld",    "Chain region 2 scattering length density"],

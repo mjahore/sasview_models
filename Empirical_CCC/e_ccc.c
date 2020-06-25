@@ -21,7 +21,7 @@ static double radius_effective(int mode, double R, double poly_sig, double rg1, 
 }
 
 
-static double Iq(double q, double I0, double m, double sld_c, double sld1, double sld2, double sld_solvent, double R, double rc, double poly_sig, double rg1, double rg2, double nu1, double nu2, double v1, double v2) {
+static double Iq(double q, double m, double sld_c, double sld1, double sld2, double sld_solvent, double R, double rc, double poly_sig, double rg1, double rg2, double nu1, double nu2, double v1, double v2) {
 
 	// Q regions:
         double Q1, Q2, Q3;
