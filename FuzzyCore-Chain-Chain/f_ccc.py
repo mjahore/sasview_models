@@ -3,7 +3,7 @@
 import numpy as np  # type: ignore
 from numpy import pi, inf, power, errstate
 
-name = "ccc"
+name = "f_ccc"
 title = "Spherically symmetric core with grafted polymer chains having two different conformations. Version 2, May 2020."
 description = """       """
 category = "shape:sphere"
@@ -19,7 +19,7 @@ parameters = [["volf",        "None",          0.02,    [0,1],          "",     
               ["sld2",        "1e-6/Ang^2",    4.24,    [-inf, inf],    "sld",    "Chain region 2 scattering length density"],
               ["sld_solvent", "1e-6/Ang^2",    6.37,    [-inf, inf],    "sld",    "Solvent scattering length density"],
               ["radius",      "Ang",           75,      [0, inf],       "volume", "Core radius"],
-              ["i_shell",     "Ang",           10,      [0, inf],       "volume", "Initiator shell thickness"],
+              ["sigma",       "Ang",           10,      [0, inf],       "",       "Fuzziness parameter"],
               ["rc",          "Ang",           150,     [0, inf],       "",       "Cutoff distance between region 1 and region 2"],
               ["poly_sig",    "chains/nm^2",   0.33,    [0, inf],       "volume", "Grafting Density"],
               ["rg1",         "Ang",           163,      [1, inf],       "volume", "Radius of gyration of chain in region 1"],
@@ -28,11 +28,11 @@ parameters = [["volf",        "None",          0.02,    [0,1],          "",     
               ["nu2",         "None",          0.50,    [0.25, 1.0],    "",       "Excluded volume parameter of chain in region 2"],
               ["v1",          "Ang^3",         12000,   [0, inf]   ,    "volume", "Volume of polymer in region 1"],
               ["v2",          "Ang^3",         12000,   [0, inf]   ,    "volume", "Volume of polymer in region 2"],
-              ["I0",          "None",          0.0,     [0, inf],       "volume",  "Intensity of free chains"],
+              ["I0",          "None",          0.0,     [0, inf],       "volume",        "Intensity of free chains"],
               ["rg3",         "Ang",           25.0,    [0, inf],       "",        "Radius of gyration of free chains"],
-              ["nu3",         "None",          0.5,     [0.25, 1.0],    "",        "Flory parm for free chain."],
+              ["nu3",         "None",          0.5,     [0.25, 1.0],    "",        "Flory exp. of free chains"],
              ]
 
 radius_effective_modes = ["radius", "outer_radius"]
-source = ["lib/sas_3j1x_x.c", "lib/sas_gammainc.c", "lib/sas_gamma.c", "ccc.c"]
+source = ["lib/sas_3j1x_x.c", "lib/sas_gammainc.c", "lib/sas_gamma.c", "f_ccc.c"]
 

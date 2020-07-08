@@ -22,13 +22,14 @@ static double radius_effective(int mode, double radius, double i_shell, double p
     }
 }
 
-static double Iq(double q, double volf, double sld_c, double sld_s, double sld1, double sld2, double sld_solvent, double radius, double i_shell, double rc, double poly_sig, double rg1, double rg2, double nu1, double nu2, double v1, double v2, double I0, double rg3) {
+static double Iq(double q, double volf, double sld_c, double sld_s, double sld1, double sld2, double sld_solvent, double radius, double i_shell, double rc, double poly_sig, double rg1, double rg2, double nu1, double nu2, double v1, double v2, double I0, double rg3, double nu3) {
 
 	// Number of grafted chains.
 	double Ng = 4.00 * M_PI * pow(0.1*(radius+i_shell), 2.0) * poly_sig;
 
 	// Parameters for polymer form factors/amplitudes:
 	double onu1, o2nu1, onu2, o2nu2, Usub1, Usub2, Usub3;
+	double onu3, o2nu3;
 
 	// Misc terms:
 	double r_coreshell, Fs, Fp1, Fp2, Pp1, Pp2, E1, E2;
@@ -40,17 +41,19 @@ static double Iq(double q, double volf, double sld_c, double sld_s, double sld1,
 	// Exponents/Pre-factors for incomplete gamma function.
 	onu1  = 1.0/nu1;
 	onu2  = 1.0/nu2;
+	onu3  = 1.0/nu3;
 	o2nu1 = 1.0/2.0/nu1;
 	o2nu2 = 1.0/2.0/nu2;
+	o2nu3 = 1.0/2.0/nu3;
 	Usub1 = (q * rg1) * (q * rg1) * (2.0*nu1 + 1.0) * (2.0*nu1 + 2.0) / 6.0;
 	Usub2 = (q * rg2) * (q * rg2) * (2.0*nu2 + 1.0) * (2.0*nu2 + 2.0) / 6.0;
-	Usub3 = (q * rg3) * (q * rg3) * (2.0*nu2 + 1.0) * (2.0*nu2 + 2.0) / 6.0;
+	Usub3 = (q * rg3) * (q * rg3) * (2.0*nu3 + 1.0) * (2.0*nu3 + 2.0) / 6.0;
 
 	// Form factor amplitude for core:
 	r_coreshell = radius + i_shell;
 	vcore       = M_4PI_3 * cube(radius);
 	vcoreshell  = M_4PI_3 * cube(r_coreshell);
-	vtotal      = vcoreshell + Ng * (v1 + v2) + I0*v2;
+	vtotal      = vcoreshell + Ng * (v1 + v2);
 	Fs = (sld_c - sld_s) * vcore * sas_3j1x_x(q*radius) + (sld_s - sld_solvent) * vcoreshell * sas_3j1x_x(q*r_coreshell);
 	
 	// Phase factors:
@@ -69,7 +72,7 @@ static double Iq(double q, double volf, double sld_c, double sld_s, double sld1,
 	term1 = Fs*Fs;
 
 	// Term 2: Polymer Self Term
-	// term2 = 2.0 * Ng * Fp1 * Fp2;
+	//term2 = 1.0 * Ng * Fp1 * Fp2;
 	term2 = 0.0;
 
 	// Term 3: Polymer Block Self Term
@@ -88,10 +91,10 @@ static double Iq(double q, double volf, double sld_c, double sld_s, double sld1,
 	term7 = Ng * (Ng - 1.0) * Fp2 * E2 * E2 * Fp2;
 
 	// Term 8: Block 2/Block 1 Crossterm
-	 term8 = Ng * (Ng - 1.0) * Fp1 * E1 * E2 * Fp2;
+	 term8 = Ng * Ng * Fp1 * E1 * E2 * Fp2;
 
 	// Term 9: Free chains (if any)
-	term9 = pow(sld2-sld_solvent, 2.0) * v2 * (onu2 * pow(Usub3, -o2nu2)*sas_gamma(o2nu2)*sas_gammainc(o2nu2, Usub3) - onu2 * pow(Usub3, -onu2)*sas_gamma(onu2)*sas_gammainc(onu2, Usub3));
+	term9 = (onu3 * pow(Usub3, -o2nu3)*sas_gamma(o2nu3)*sas_gammainc(o2nu3, Usub3) - onu3 * pow(Usub3, -onu3)*sas_gamma(onu3)*sas_gammainc(onu3, Usub3));
 	
 
 	// Final intensity:
