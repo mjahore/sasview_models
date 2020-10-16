@@ -39,8 +39,8 @@ static double Iq(double q, double volf, double sld_c, double sld_s, double sld1,
 	double b = Cinfty * 1.54 / cos(theta0/2.0);
 
 	// Calculate degree of polymerizations, given Cinfty:
-	double N1 = (M1/M0) * cos(theta0/2.0) / Cinfty;
-	double N2 = (M2/M0) * cos(theta0/2.0) / Cinfty;
+	double N1 = (M1/M0) * pow(cos(theta0/2.0), 2) / Cinfty;
+	double N2 = (M2/M0) * pow(cos(theta0/2.0), 2) / Cinfty;
 
 	// Exponents/Pre-factors for incomplete gamma function.
 	onu1  = 1.0/nu1;
