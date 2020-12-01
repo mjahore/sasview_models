@@ -15,7 +15,7 @@ M.J.A. Hore, J. Ford, K. Ohno, R. J. Composto, B. Hammouda, Macromolecules 46, 9
 
 import numpy as np  # type: ignore
 from numpy import pi, inf, power, errstate
-from sasmodels.special import sas_gammainc, sas_sinx_x, sas_3j1x_x
+from sasmodels.special import sas_gamma, sas_gammainc, sas_sinx_x, sas_3j1x_x
 
 name = "core_chain"
 title = "Spherically symmetric core with grafted polymer chains."
