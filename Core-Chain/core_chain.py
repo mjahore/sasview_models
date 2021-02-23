@@ -25,7 +25,7 @@ category = "shape:sphere"
 
 #             [ "name",       "units",         default, [lower, upper], "type",   "description"],
 parameters = [["sld",         "1e-6/Ang^2",    3.5,     [-inf, inf],    "sld",    "Core scattering length density"],
-	      ["sld_poly",    "1e-6/Ang^2",    1.0,     [-inf, inf],    "sld",    "Grafted polymer scattering length density"],
+	          ["sld_poly",    "1e-6/Ang^2",    1.0,     [-inf, inf],    "sld",    "Grafted polymer scattering length density"],
               ["sld_solvent", "1e-6/Ang^2",    4.4,     [-inf, inf],    "sld",    "Solvent scattering length density"],
               ["radius",      "Ang",           60,      [0, inf],       "volume", "Core radius"],
               ["poly_sig",    "chains/nm^2",   0.50,    [0, inf],       "",       "Polymer grafting density"],
@@ -56,9 +56,12 @@ def Iq(q,
     :return:               Calculated intensity
     """
 
+    # Number of grafted chains per core:
+    Ng = poly_sig * 4.00 * pi * (0.1 * radius) * (0.1 * radius)
+
     # Volume of core regions:
     Vcore      = 4.0/3.0 * pi * radius**3
-    Vtotal     = Vcore + v_poly
+    Vtotal     = Vcore + Ng*v_poly
 
     # One over excl. vol. parm.:
     onu  = 1.0 / nu
@@ -66,9 +69,6 @@ def Iq(q,
 
     # Propagator function:
     Ea = sas_sinx_x(q*radius)
-
-    # Number of grafted chains per core:
-    Ng = poly_sig * 4.00 * pi * (0.1 * radius) * (0.1 * radius)
 
     # Polymer size variable
     Usub = (q*rg)**2 * (2.0*nu + 1.0) * (2.0*nu + 2.0) / 6.0
